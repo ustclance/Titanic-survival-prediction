@@ -21,7 +21,6 @@ import random as rnd
 import seaborn as sns
 import matplotlib.pyplot as plt
 
-
 # machine learning
 from sklearn.linear_model import LogisticRegression
 from sklearn.svm import SVC, LinearSVC
@@ -36,8 +35,10 @@ from sklearn.tree import DecisionTreeClassifier
 train_df = pd.read_csv('C:/Users/lance/PycharmProjects/Titanic/train.csv')
 test_df = pd.read_csv('C:/Users/lance/PycharmProjects/Titanic/test.csv')
 combine = [train_df, test_df]
+
 # Find features in data
 print(train_df.columns.values)
+
 # preview the data first and last 5 records to identify feature types and potential errors
 print(train_df.head())
 print(train_df.tail())
@@ -47,8 +48,7 @@ print(train_df.info())
 print('_'*40)
 print(test_df.info())
 
-# summarize all numeric column central tendency, dispersion and shape of a
-# dataset’s distribution, excluding NaN values
+# summarize all numeric column central tendency, dispersion and shape of a dataset’s distribution, excluding NaN values
 print(train_df.describe())
 
 # summarize string data type
@@ -75,6 +75,7 @@ grid.add_legend();
 grid = sns.FacetGrid(train_df, row='Embarked', size=2.2, aspect=1.6)
 grid.map(sns.pointplot, 'Pclass', 'Survived', 'Sex', palette='deep')
 grid.add_legend()
+
 # Correlate categorical and numerical features with survival
 # grid = sns.FacetGrid(train_df, col='Embarked', hue='Survived', palette={0: 'k', 1: 'w'})
 grid = sns.FacetGrid(train_df, row='Embarked', col='Survived', size=2.2, aspect=1.6)
@@ -126,7 +127,7 @@ train_df.shape, test_df.shape
 for dataset in combine:
     dataset['Sex'] = dataset['Sex'].map( {'female': 1, 'male': 0} ).astype(int)
 
-train_df.head()
+Print (train_df.head())
 # grid = sns.FacetGrid(train_df, col='Pclass', hue='Gender')
 
 # Show feature correlations in multiple facets
@@ -134,8 +135,7 @@ grid = sns.FacetGrid(train_df, row='Pclass', col='Sex', size=2.2, aspect=1.6)
 grid.map(plt.hist, 'Age', alpha=.5, bins=20)
 grid.add_legend()
 
-# Replace NaN and null data with median age based on correlated features sex
-# and priority group, ie. median Age for Pclass=1 and Gender=0, Pclass=1 and Gender=1,
+# Replace NaN and null data with median age based on correlated features sex and priority group, ie. median Age for Pclass=1 and Gender=0, Pclass=1 and Gender=1,
 
 # Create a 2(sex)x3(Pclass) array of 0s to contain guessed Age values based on Pclass x Gender combinations
 guess_ages = np.zeros((2,3))
@@ -164,7 +164,7 @@ for dataset in combine:
 
     dataset['Age'] = dataset['Age'].astype(int)
 
-train_df.head()
+Print(train_df.head())
 
 # Cut Age to Agebands to correlate Age with survival
 train_df['AgeBand'] = pd.cut(train_df['Age'], 5)
@@ -187,6 +187,7 @@ train_df.head()
 # Combine SibSp and Parch features into FamilySize in order to drop them
 for dataset in combine:
     dataset['FamilySize'] = dataset['SibSp'] + dataset['Parch'] + 1
+
 # Correlate FamilySize with Survived
 train_df[['FamilySize', 'Survived']].groupby(['FamilySize'], as_index=False).mean().sort_values(by='Survived', ascending=False)
 
@@ -194,6 +195,7 @@ train_df[['FamilySize', 'Survived']].groupby(['FamilySize'], as_index=False).mea
 for dataset in combine:
     dataset['IsAlone'] = 0
     dataset.loc[dataset['FamilySize'] == 1, 'IsAlone'] = 1
+
 # Correlate IsAlone with Survived
 train_df[['IsAlone', 'Survived']].groupby(['IsAlone'], as_index=False).mean()
 
@@ -203,19 +205,22 @@ train_df = train_df.drop(['Parch', 'SibSp', 'FamilySize'], axis=1)
 test_df = test_df.drop(['Parch', 'SibSp', 'FamilySize'], axis=1)
 combine = [train_df, test_df]
 
-train_df.head()
+Print(train_df.head())
+
 # Create Age*Class feature
 for dataset in combine:
     dataset['Age*Class'] = dataset.Age * dataset.Pclass
 train_df.loc[:, ['Age*Class', 'Age', 'Pclass']].head(10)
+
 # Complete missing data with most frequent value
 freq_port = train_df.Embarked.dropna().mode()[0]
 for dataset in combine:
     dataset['Embarked'] = dataset['Embarked'].fillna(freq_port)
-# Correlate Embarked with Survived
-train_df[['Embarked', 'Survived']].groupby(['Embarked'], as_index=False).mean().sort_values(by='Survived',
 
-# Convert Embarked to numeric value                                                                                            ascending=False)
+# Correlate Embarked with Survived
+train_df[['Embarked', 'Survived']].groupby(['Embarked'], as_index=False).mean().sort_values(by='Survived', ascending=False)
+
+# Convert Embarked to numeric value
 for dataset in combine:
     dataset['Embarked'] = dataset['Embarked'].map( {'S': 0, 'C': 1, 'Q': 2} ).astype(int)
 train_df.head()
@@ -241,21 +246,18 @@ for dataset in combine:
 train_df = train_df.drop(['FareBand'], axis=1)
 combine = [train_df, test_df]
 
-train_df.head(10)
-test_df.head(10)
-
+Print (train_df.head(10))
+Print(test_df.head(10))
 
 # data visualization
-
 
 # Take Survived out of X_train and put into label Y_train
 X_train = train_df.drop("Survived", axis=1)
 Y_train = train_df["Survived"]
 X_test  = test_df.drop("PassengerId", axis=1).copy()
 X_train.shape, Y_train.shape, X_test.shape
-# Logistic Regression is a linear model that measures the relationship between the categorical
-# dependent variable (feature) and one or more independent variables
-# (features) by estimating probabilities
+
+# Logistic Regression is a linear model that measures the relationship between the categorical dependent variable (feature) and one or more independent variables (features) by estimating probabilities.
 
 logreg = LogisticRegression()
 
@@ -278,8 +280,7 @@ coeff_df["Correlation"] = pd.Series(logreg.coef_[0])
 # Show the results in descending order
 coeff_df.sort_values(by='Correlation', ascending=False)
 
-# Support Vector Machines, a most widely used clustering non-probabilistic
-# binary linear classifier, can also be used for non-linear classification.
+# Support Vector Machines, a most widely used clustering non-probabilistic binary linear classifier, can also be used for non-linear classification.
 
 svc = SVC()
 svc.fit(X_train, Y_train)
@@ -294,8 +295,7 @@ Y_pred = linear_svc.predict(X_test)
 acc_linear_svc = round(linear_svc.score(X_train, Y_train) * 100, 2)
 print(acc_linear_svc)
 
-# KNN, a non-parametric method used for classification and regression where a sample
-# is classified by a majority vote of its neighbors. Better than Logistics Regression but worse than SVM.
+# KNN, a non-parametric method used for classification and regression where a sample is classified by a majority vote of its neighbors. Better than Logistics Regression but worse than SVM.
 knn = KNeighborsClassifier(n_neighbors = 3)
 knn.fit(X_train, Y_train)
 Y_pred = knn.predict(X_test)
@@ -317,24 +317,20 @@ acc_perceptron = round(perceptron.score(X_train, Y_train) * 100, 2)
 print(acc_perceptron)
 
 # Stochastic Gradient Descent uses randomly selected (or shuffled) samples to evaluate the gradients.
-
 sgd = SGDClassifier()
 sgd.fit(X_train, Y_train)
 Y_pred = sgd.predict(X_test)
 acc_sgd = round(sgd.score(X_train, Y_train) * 100, 2)
 print(acc_sgd)
 
-# Decision_tree is a predictive model which maps features (tree branches) to conclusions about the target value
-# (tree leaves). Leaves represent class labels and branches represent conjunctions of features.
-# Regression tree takes continuous values. The model confidence score is the highest among models evaluated without ensembeling.
+# Decision_tree is a predictive model which maps features (tree branches) to conclusions about the target value (tree leaves). Leaves represent class labels and branches represent conjunctions of features. Regression tree takes continuous values. The model confidence score is the highest among models evaluated without ensembeling.
 decision_tree = DecisionTreeClassifier()
 decision_tree.fit(X_train, Y_train)
 Y_pred = decision_tree.predict(X_test)
 acc_decision_tree = round(decision_tree.score(X_train, Y_train) * 100, 2)
 print(acc_decision_tree)
 
-# Random Forests is one of the most popular, constructs a multitude of decision trees (n_estimators=100) at training time
-# and outputs the class that is the mode of the classes (classification) or mean prediction (regression) of the individual trees.
+# Random Forests is one of the most popular, constructs a multitude of decision trees (n_estimators=100) at training time and outputs the class that is the mode of the classes (classification) or mean prediction (regression) of the individual trees.
 random_forest = RandomForestClassifier(n_estimators=100)
 random_forest.fit(X_train, Y_train)
 Y_pred = random_forest.predict(X_test)
@@ -345,8 +341,7 @@ print(acc_random_forest)
 # Model evaluation
 
 # Make a table to compare models by their accuracy scores
-# Pick Random Forest as they correct for decision trees' habit of
-# overfitting to their training set.
+# Pick Random Forest as they correct for decision trees' habit of overfitting to their training set.
 models = pd.DataFrame({
     'Model': ['Support Vector Machines', 'KNN', 'Logistic Regression',
               'Random Forest', 'Naive Bayes', 'Perceptron',
@@ -356,14 +351,15 @@ models = pd.DataFrame({
               acc_random_forest, acc_gaussian, acc_perceptron,
               acc_sgd, acc_linear_svc, acc_decision_tree]})
 models.sort_values(by='Score', ascending=False)
-
+print(models)
+# submission.to_csv('../output/submission.csv', index=False)
 submission = pd.DataFrame({
         "PassengerId": test_df["PassengerId"],
         "Survived": Y_pred
     })
-# submission.to_csv('../output/submission.csv', index=False)
 
-print(models)
+
+
 
 
 
