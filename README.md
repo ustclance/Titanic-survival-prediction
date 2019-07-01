@@ -1,5 +1,5 @@
 # Titanic-survival-prediction
-# This is a basic data science learning project.
+# This is a step-by-step basic data science learning project.
 # A typical machine learning workflow consists of 7 steps:
 # 1 Question or problem definition.
 # 2 Acquire training and testing data.
