@@ -8,3 +8,5 @@ In this challenge, we ask you to complete the analysis of what sorts of people w
 Practice Skills
 Binary classification
 Python and R basics
+
+Detailed codes are saved as Titanic.py.
